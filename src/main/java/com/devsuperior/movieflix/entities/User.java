@@ -1,6 +1,5 @@
 package com.devsuperior.movieflix.entities;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,79 +27,76 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "tb_user")
 public class User implements UserDetails, Serializable {
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private String name;
-	
-	@Column(unique = true)
-	private String email;
-	
-	private String password;
-	
-	@OneToMany(mappedBy = "user")
-	private List<Review> reviews = new ArrayList<>();
-	
-	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "tb_user_role",
-		joinColumns = @JoinColumn(name = "user_id"),
-		inverseJoinColumns = @JoinColumn(name = "role_id"))	
-	private Set<Role> roles = new HashSet<>();
-	
-	public User() {
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String name;
 
-	public User(Long id, String email, String password) {
-		super();
-		this.id = id;
-		this.email = email;
-		this.password = password;
-	}
+    @Column(unique = true)
+    private String email;
+    private String password;
 
-	public Long getId() {
-		return id;
-	}
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_user_role",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    @OneToMany(mappedBy = "user")
+    private List<Review> reviews = new ArrayList<>();
 
-	public String getName() {
-		return name;
-	}
+    public User() {
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public User(Long id, String name, String email, String password) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public String getPassword() {
-		return password;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	
-	
+    public String getName() {
+        return name;
+    }
 
-	public List<Review> getReviews() {
-		return reviews;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public Set<Role> getRoles() {
-		return roles;
-	}
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
 
 	@Override
 	public int hashCode() {
@@ -156,14 +152,5 @@ public class User implements UserDetails, Serializable {
 	@Override
 	public boolean isEnabled() {
 		return true;
-	}	
-	
-	public boolean hasHole(String roleName) {
-		for (Role role : roles) {
-			if (role.getAuthority().equals(roleName)) {
-				return true;
-			}
-		}
-		return false;
-	}	
+	}		
 }
